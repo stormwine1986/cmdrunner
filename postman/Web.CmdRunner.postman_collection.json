@@ -30,7 +30,7 @@
 				"header": [
 					{
 						"key": "AuthorizationToken",
-						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ3cnZzLnVzZXIwIjoicGppYSIsImlzcyI6IndydnMud2ViMCIsImV4cCI6MTYzNDY0NzY2NCwiaWF0IjoxNjM0NjQ2NzY0fQ.hR217UVeSBBfawQah7o-Tv0LY7nboVABkoDtbIK7i-g",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ3cnZzLnVzZXIwIjoiYWRtaW4iLCJpc3MiOiJ3cnZzLndlYjAiLCJleHAiOjE2NTU3OTg1MTcsImlhdCI6MTY1NTc5NzYxN30.1r3Tb1JEIGQTmxH94tJL14PFzNtPN1oUqTz9f7VWYzM",
 						"type": "text"
 					}
 				],
@@ -203,12 +203,12 @@
 					"basic": [
 						{
 							"key": "password",
-							"value": "pjia",
+							"value": "admin",
 							"type": "string"
 						},
 						{
 							"key": "username",
-							"value": "pjia",
+							"value": "admin",
 							"type": "string"
 						}
 					]
@@ -316,6 +316,55 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "导入docx",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "AuthorizationToken",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Title",
+							"value": "导入文档测试002",
+							"type": "text"
+						},
+						{
+							"key": "Project",
+							"value": "/Demo",
+							"type": "text"
+						},
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/Stormwine/Desktop/2 - 2022-07-07.docx"
+						},
+						{
+							"key": "Windchill OID",
+							"value": "OR:wt.doc.WTDocument:3",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ROOT}}/gateway/import",
+					"host": [
+						"{{ROOT}}"
+					],
+					"path": [
+						"gateway",
+						"import"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"event": [
@@ -325,8 +374,7 @@
 				"type": "text/javascript",
 				"exec": [
 					""
-				],
-				"id": "5183bdb9-f1a6-455c-87e0-a4732b170792"
+				]
 			}
 		},
 		{
@@ -335,17 +383,14 @@
 				"type": "text/javascript",
 				"exec": [
 					""
-				],
-				"id": "781b53d7-80eb-4c4e-af0b-973cfb187792"
+				]
 			}
 		}
 	],
 	"variable": [
 		{
-			"id": "7708e761-fe66-478b-966a-aafd186ded3f",
 			"key": "ROOT",
 			"value": "http://127.0.0.1:9100"
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }
