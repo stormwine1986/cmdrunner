@@ -1,0 +1,351 @@
+{
+	"info": {
+		"_postman_id": "73a5fb2e-83ec-45e7-a8fb-eac165566890",
+		"name": "Web.CmdRunner",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "ping",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ROOT}}/heathy/ping",
+					"host": [
+						"{{ROOT}}"
+					],
+					"path": [
+						"heathy",
+						"ping"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "查询Item列表",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "AuthorizationToken",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ3cnZzLnVzZXIwIjoicGppYSIsImlzcyI6IndydnMud2ViMCIsImV4cCI6MTYzNDY0NzY2NCwiaWF0IjoxNjM0NjQ2NzY0fQ.hR217UVeSBBfawQah7o-Tv0LY7nboVABkoDtbIK7i-g",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    \"im\",\r\n    \"issues\",\r\n    [\r\n        {\"fields\":\"ID,Summary,State,Type,Created Date,Created By\"},\r\n        {\"query\":\"All Documents\"}\r\n    ],\r\n    [\r\n        \r\n    ]\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ROOT}}/cmdrunner",
+					"host": [
+						"{{ROOT}}"
+					],
+					"path": [
+						"cmdrunner"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "查询Item详情",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "AuthorizationToken",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ3cnZzLnVzZXIwIjoicGppYSIsImlzcyI6IndydnMud2ViMCIsImV4cCI6MTYzNDY0ODYxMSwiaWF0IjoxNjM0NjQ3NzExfQ.RMCeeuKngqxBKwDzG1gKc9_nfue9EPqG-6oKrjeFZk4",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    \"im\",\r\n    \"viewissue\",\r\n    [\r\n        \"showRichcontent\"\r\n    ],\r\n    [\r\n        \"452\"\r\n    ]\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ROOT}}/cmdrunner",
+					"host": [
+						"{{ROOT}}"
+					],
+					"path": [
+						"cmdrunner"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "下载附件",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ROOT}}/attachment/download?itemId=1&fieldName=DescriptionAttachments&fileName=schematic.png",
+					"host": [
+						"{{ROOT}}"
+					],
+					"path": [
+						"attachment",
+						"download"
+					],
+					"query": [
+						{
+							"key": "itemId",
+							"value": "1"
+						},
+						{
+							"key": "fieldName",
+							"value": "DescriptionAttachments"
+						},
+						{
+							"key": "fileName",
+							"value": "schematic.png"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "更新附件",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "AuthorizationToken",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ3cnZzLnVzZXIwIjoidGVzdDEiLCJpc3MiOiJ3cnZzLndlYjAiLCJleHAiOjE2MzI0ODc4ODcsImlhdCI6MTYzMjQ4Njk4N30.8cw2KDdas_cpg2va8EgQTgZauFZIY0p-GDuMDjQVydA",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "itemId",
+							"value": "452",
+							"type": "text"
+						},
+						{
+							"key": "fieldName",
+							"value": "Shared Attachments",
+							"type": "text"
+						},
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/pjia/Desktop/sample.js"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ROOT}}/attachment/update",
+					"host": [
+						"{{ROOT}}"
+					],
+					"path": [
+						"attachment",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "删除附件",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "AuthorizationToken",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ3cnZzLnVzZXIwIjoidGVzdDEiLCJpc3MiOiJ3cnZzLndlYjAiLCJleHAiOjE2MzI0OTExNDYsImlhdCI6MTYzMjQ5MDI0Nn0.C2aXLRzqU6phZEyuVDWT2haRo_Itu41p7yRsH3mDYa0",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    \"im\",\r\n    \"editissue\",\r\n    [\r\n        {\"removeAttachment\":\"field=Shared Attachments,name=sample.js\"}\r\n    ],\r\n    [\r\n        \"452\"\r\n    ]\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ROOT}}/cmdrunner",
+					"host": [
+						"{{ROOT}}"
+					],
+					"path": [
+						"cmdrunner"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "登录",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "pjia",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "pjia",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ROOT}}/session/create",
+					"host": [
+						"{{ROOT}}"
+					],
+					"path": [
+						"session",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "创建 Issue",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "AuthorizationToken",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ3cnZzLnVzZXIwIjoidGVzdDEiLCJpc3MiOiJ3cnZzLndlYjAiLCJleHAiOjE2MzI0Njg2NzMsImlhdCI6MTYzMjQ2Nzc3M30.0ldDLM1c7z-7G_hfODo070szKI8CQf5fKM3yp2uAfzg",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    \"im\",\r\n    \"createissue\",\r\n    [\r\n        {\"type\":\"Component Software Version\"},\r\n        {\"field\":\"Project=/DEMO/P04\"},\r\n        {\"field\":\"Summary=test20210924\"}\r\n    ],\r\n    []\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ROOT}}/cmdrunner",
+					"host": [
+						"{{ROOT}}"
+					],
+					"path": [
+						"cmdrunner"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "查询用户所属组",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "AuthorizationToken",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ3cnZzLnVzZXIwIjoidGVzdDEiLCJpc3MiOiJ3cnZzLndlYjAiLCJleHAiOjE2MzI0NzA3OTEsImlhdCI6MTYzMjQ2OTg5MX0.HKoZ_hKSlUbpJv-0qMtDE942yIq6Mswfb-H5U4OL61k",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    \"aa\",\r\n    \"users\",\r\n    [\r\n       \"groups\"\r\n    ],\r\n    [\"pjia\"]\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ROOT}}/cmdrunner",
+					"host": [
+						"{{ROOT}}"
+					],
+					"path": [
+						"cmdrunner"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Mksapi 使用 Demo",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "AuthorizationToken",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ3cnZzLnVzZXIwIjoiYWRtaW4iLCJpc3MiOiJ3cnZzLndlYjAiLCJleHAiOjE2NTU3OTg1MTcsImlhdCI6MTY1NTc5NzYxN30.1r3Tb1JEIGQTmxH94tJL14PFzNtPN1oUqTz9f7VWYzM",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{ROOT}}/services/inputdocument/2",
+					"host": [
+						"{{ROOT}}"
+					],
+					"path": [
+						"services",
+						"inputdocument",
+						"2"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				],
+				"id": "5183bdb9-f1a6-455c-87e0-a4732b170792"
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				],
+				"id": "781b53d7-80eb-4c4e-af0b-973cfb187792"
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "7708e761-fe66-478b-966a-aafd186ded3f",
+			"key": "ROOT",
+			"value": "http://127.0.0.1:9100"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
