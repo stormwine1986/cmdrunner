@@ -35,7 +35,7 @@ public class WRVSClientAutoConfiguration implements InitializingBean {
     public FilterRegistrationBean<SecurityFilter> registerSecurityFilter() {  
         FilterRegistrationBean<SecurityFilter> registration = new FilterRegistrationBean<>();  
         registration.setFilter(new SecurityFilter(properties));  
-        registration.addUrlPatterns("/cmdrunner","/services/*","/attachment/*","/revision/*");
+        registration.addUrlPatterns("/cmdrunner","/services/*","/attachment/*","/revision/*","/gateway/*");
         registration.setName("SecurityFilter");  
         registration.setOrder(2); 
         return registration;
