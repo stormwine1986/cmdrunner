@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "73a5fb2e-83ec-45e7-a8fb-eac165566890",
+		"_postman_id": "a6bee4a6-d51a-4a05-8fd6-0f643a7c6702",
 		"name": "Web.CmdRunner",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -361,6 +361,28 @@
 					"path": [
 						"gateway",
 						"import"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "数据推送",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"hello\":\"222222\"}"
+				},
+				"url": {
+					"raw": "{{ROOT}}/datapush/data",
+					"host": [
+						"{{ROOT}}"
+					],
+					"path": [
+						"datapush",
+						"data"
 					]
 				}
 			},
