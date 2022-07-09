@@ -30,7 +30,7 @@ public class App extends SpringBootServletInitializer implements WebApplicationI
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.addAllowedOrigin("*");
+        config.addAllowedOrigin("*"); // 解决跨域
         config.setMaxAge(3600l);
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
