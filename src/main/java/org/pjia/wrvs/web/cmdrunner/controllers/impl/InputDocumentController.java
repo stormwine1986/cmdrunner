@@ -1,7 +1,5 @@
 package org.pjia.wrvs.web.cmdrunner.controllers.impl;
 
-import javax.websocket.server.PathParam;
-
 import org.pjia.wrvs.web.cmdrunner.RequestContext;
 import org.pjia.wrvs.web.cmdrunner.controllers.IInputDocumentController;
 import org.pjia.wrvs.web.cmdrunner.vo.InputDocumentVO;
