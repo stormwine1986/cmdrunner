@@ -1,7 +1,5 @@
 package org.pjia.wrvs.web.cmdrunner.controllers;
 
-import org.springframework.web.bind.annotation.RequestParam;
-
 /**
  * 提供给 RVS 使用的数据推送接口
  * 
