@@ -26,7 +26,7 @@ public abstract class AbstractScheduler implements InitializingBean {
 						log.error("", e);
 					}
 				}, 
-				task.getRate(), 
+				0, 
 				task.getRate(), 
 				TimeUnit.SECONDS);
 	}

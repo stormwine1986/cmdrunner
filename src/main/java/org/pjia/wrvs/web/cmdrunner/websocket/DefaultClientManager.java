@@ -1,11 +1,17 @@
 package org.pjia.wrvs.web.cmdrunner.websocket;
 
-import java.util.Iterator;
+import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
+import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
+
+import com.google.gson.JsonObject;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,19 +23,36 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @Component
-public class DefaultClientManager {
+public class DefaultClientManager implements ApplicationContextAware {
 		
+	public static String SAMPLER_HEADER_NAME = "SAMPLER";
+	
 	// 已连接的 client session 的缓存
-	private Map<String, WebSocketSession> sessions = new ConcurrentHashMap<>();
+	private Map<String, WebSocketSessionWapper> sessions = new ConcurrentHashMap<>();
+
+	private ApplicationContext ctx;
 
 	/**
 	 * 向缓存添加 session
 	 * 
 	 * @param session
 	 */
-	public void add(WebSocketSession session) {
-		sessions.put(session.getId(), session);
+	public void apply(WebSocketSession session) {
+		WebSocketSessionWapper wrapper = new WebSocketSessionWapper(session, (String) session.getAttributes().get(SAMPLER_HEADER_NAME));
+		sessions.put(session.getId(), wrapper);
 		log.info("add session [" + session + "] to cache.");
+		pushInitData(wrapper);
+	}
+
+	private void pushInitData(WebSocketSessionWapper wrapper) {
+		try {
+			ISampler sampler = (ISampler) ctx.getBean(Class.forName(wrapper.getSimpleName()));
+			sampler.getCachedData().stream().forEach((data)->{
+				push(data, wrapper.getSimpleName());
+			});
+		} catch (BeansException | ClassNotFoundException e) {
+			log.error("",e);
+		}
 	}
 
 	/**
@@ -41,14 +64,26 @@ public class DefaultClientManager {
 		sessions.remove(session.getId());
 		log.info("remove session [" + session + "] from cache.");
 	}
-	
+
 	/**
-	 * 获取所有的 sessions
+	 * 向客户端推送数据
 	 * 
-	 * @return
 	 */
-	public Iterator<WebSocketSession> get(){
-		return sessions.values().iterator();
+	public void push(JsonObject data, String simplerName) {
+		TextMessage message = new TextMessage(data.toString());
+		sessions.values().stream().filter((wapper)->wapper.getSimpleName().equals(simplerName)).forEach((wapper)->{
+			try {
+				wapper.getSession().sendMessage(message);
+			} catch (IOException e) {
+				log.error("", e);
+			}
+		});
+		
+	}
+
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		this.ctx = applicationContext;
 	}
 
 }
