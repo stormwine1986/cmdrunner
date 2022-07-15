@@ -8,9 +8,9 @@
     <version>2.0.5.RELEASE</version>
   </parent>
 
-  <groupId>org.pjia.wrvs.web</groupId>
-  <artifactId>cmdrunner</artifactId>
-  <version>12.3.1</version>
+  <groupId>rvs.web</groupId>
+  <artifactId>helper</artifactId>
+  <version>0.1</version>
   <packaging>jar</packaging>
 
   <name>cmdrunner</name>
