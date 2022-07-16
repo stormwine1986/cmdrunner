@@ -33,7 +33,7 @@ public class WRVSClientAutoConfiguration implements InitializingBean {
     public FilterRegistrationBean<JWTAuthFilter> registerSecurityFilter() {  
         FilterRegistrationBean<JWTAuthFilter> registration = new FilterRegistrationBean<>();  
         registration.setFilter(new JWTAuthFilter(properties));  
-        registration.addUrlPatterns("/cmdrunner","/services/*","/attachment/*","/revision/*","/gateway/*");
+        registration.addUrlPatterns("/api","/services/*","/attachment/*","/gateway/*");
         registration.setName("SecurityFilter");  
         registration.setOrder(2); 
         return registration;
