@@ -9,7 +9,6 @@
   </parent>
 
   <groupId>rvs.web</groupId>
-  <artifactId>helper</artifactId>
   <version>0.1</version>
   <packaging>jar</packaging>
 
@@ -66,4 +65,5 @@
             </plugin>
         </plugins>
     </build>
+  <artifactId>cmdrunner</artifactId>
 </project>
