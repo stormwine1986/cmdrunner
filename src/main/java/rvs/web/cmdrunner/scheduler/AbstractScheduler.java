@@ -4,13 +4,11 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import org.springframework.beans.factory.InitializingBean;
-
 import lombok.extern.slf4j.Slf4j;
 import rvs.web.cmdrunner.feature.Feature;
 
 @Slf4j
-public abstract class AbstractScheduler implements InitializingBean {
+public abstract class AbstractScheduler implements IStaticTask {
 
 	private ScheduledExecutorService es = Executors.newSingleThreadScheduledExecutor();
 
@@ -19,18 +17,20 @@ public abstract class AbstractScheduler implements InitializingBean {
 	 * 
 	 * @param task
 	 */
-	protected void schedule(IStaticTask task) {
+	public void schedule(IStaticTask task) {
 		if(Feature.isEnable(Feature.SCHEDULER)) {
-			es.scheduleWithFixedDelay(()->{
-				try {
-					task.run();
-				} catch (Exception e) {
-					log.error("", e);
-				}
-			}, 
+			es.scheduleAtFixedRate(()->{
+						try {
+							task.run();
+						} catch (Exception e) {
+							log.error("", e);
+						}
+					}, 
 					task.getInitDelay(), 
 					task.getRate(), 
-					TimeUnit.SECONDS);			
+					TimeUnit.SECONDS);
 		}
 	}
+	
+	
 }
