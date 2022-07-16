@@ -1,17 +1,11 @@
 package rvs.web.cmdrunner.websocket;
 
-import java.io.IOException;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
-import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
-
-import com.google.gson.JsonObject;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,14 +17,10 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @Component
-public class DefaultClientManager implements ApplicationContextAware {
-		
-	public static String SAMPLER_HEADER_NAME = "SAMPLER";
+public class DefaultClientManager {
 	
 	// 已连接的 client session 的缓存
-	private Map<String, WebSocketSessionWapper> sessions = new ConcurrentHashMap<>();
-
-	private ApplicationContext ctx;
+	private Map<String, WebSocketSession> sessions = new ConcurrentHashMap<>();
 
 	/**
 	 * 向缓存添加 session
@@ -38,21 +28,8 @@ public class DefaultClientManager implements ApplicationContextAware {
 	 * @param session
 	 */
 	public void apply(WebSocketSession session) {
-		WebSocketSessionWapper wrapper = new WebSocketSessionWapper(session, (String) session.getAttributes().get(SAMPLER_HEADER_NAME));
-		sessions.put(session.getId(), wrapper);
+		sessions.put(session.getId(), session);
 		log.info("add session [" + session + "] to cache.");
-		pushInitData(wrapper);
-	}
-
-	private void pushInitData(WebSocketSessionWapper wrapper) {
-		try {
-			ISampler sampler = (ISampler) ctx.getBean(Class.forName(wrapper.getSimpleName()));
-			sampler.getCachedData().stream().forEach((data)->{
-				push(data, wrapper.getSimpleName());
-			});
-		} catch (BeansException | ClassNotFoundException e) {
-			log.error("",e);
-		}
 	}
 
 	/**
@@ -64,26 +41,13 @@ public class DefaultClientManager implements ApplicationContextAware {
 		sessions.remove(session.getId());
 		log.info("remove session [" + session + "] from cache.");
 	}
-
+	
 	/**
-	 * 向客户端推送数据
+	 * 获取所有已连接的session缓存
 	 * 
+	 * @return
 	 */
-	public void push(JsonObject data, String simplerName) {
-		TextMessage message = new TextMessage(data.toString());
-		sessions.values().stream().filter((wapper)->wapper.getSimpleName().equals(simplerName)).forEach((wapper)->{
-			try {
-				wapper.getSession().sendMessage(message);
-			} catch (IOException e) {
-				log.error("", e);
-			}
-		});
-		
+	public Iterator<WebSocketSession> getAll() {
+		return sessions.values().iterator();
 	}
-
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		this.ctx = applicationContext;
-	}
-
 }

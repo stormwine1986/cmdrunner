@@ -5,9 +5,9 @@ import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,7 +22,7 @@ import rvs.web.cmdrunner.client.IWRVSClient;
 @RequestMapping("/session")
 public class SessionController implements ISessionController {
 	
-	@Autowired
+	@Resource
 	private IWRVSClient client;
 
 	@Override

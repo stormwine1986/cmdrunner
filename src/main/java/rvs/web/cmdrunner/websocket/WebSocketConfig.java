@@ -34,5 +34,4 @@ public class WebSocketConfig implements WebSocketConfigurer {
 			.setAllowedOrigins("*"); // 解决跨域			
 		}
 	}
-
 }

@@ -16,7 +16,7 @@ public class Feature {
 	public final static String API = "API";
 	public final static String GATEWAY = "Gateway";
 	public final static String ATTACHMENT = "Attachment";
-	public final static String WEBSOCKET = "WebScoket";
+	public final static String WEBSOCKET = "WebSocket";
 	public final static String SCHEDULER = "Scheduler";
 	
 	private static FeatureProperties props;

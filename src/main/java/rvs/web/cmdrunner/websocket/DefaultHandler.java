@@ -41,13 +41,8 @@ public class DefaultHandler implements WebSocketHandler {
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 		// 在这里缓存用户信息
-		try{
-			clientMgr.apply(session);
-			log.info("session [" + session + "] connected");
-		} catch(Exception e) {
-			log.error("", e);
-			session.close();
-		}
+		clientMgr.apply(session);
+		log.info("session [" + session + "] connected");
 	}
 
 	/**
