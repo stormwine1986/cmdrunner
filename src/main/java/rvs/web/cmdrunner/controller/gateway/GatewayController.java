@@ -4,23 +4,24 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.mks.api.Command;
-import com.mks.api.Option;
-import com.mks.api.response.Response;
-import com.mks.api.response.WorkItem;
 
 import lombok.extern.slf4j.Slf4j;
 import rvs.web.cmdrunner.client.IWRVSClient;
@@ -39,19 +40,20 @@ public class GatewayController implements IGatewayController {
 			+ "--file=\"${file}\" "
 			+ "--Fields=${fields} --silent";
 	
-	private static String Doc_Studio_URL = "http://${hostname}:${port}/extended-web-ui/doc-workspace/doc/${docId}";
+	private static String EXPORT_CMD = "gateway export --hostname=${hostname} --port=${port} --user=${user} --password=${pwd} " 
+			+ "--config=\"${config}\" " 
+			+ "--file=\"${tempfile}\" --silent ${id}";
 
 	@Override
 	@PostMapping("/import")
-	public Map<String, String> doImport(MultipartFile file, @RequestParam("Title") String title, @RequestParam("Project") String project, @RequestParam(name="Windchill OID",required=false) String oid) throws Exception {
+	public void doImport(MultipartFile file, @RequestParam("Title") String title, @RequestParam("Configuration") String configName, @RequestParam("Project") String project, HttpServletRequest request) throws Exception {
 		
-		if(!Feature.isEnable(Feature.GATEWAY)) throw new IllegalStateException("节点未启用 Gateway特性");
+		if(!Feature.isEnable(Feature.GATEWAY)) throw new IllegalStateException("节点未启用Gateway特性");
 		
 		if(!file.getOriginalFilename().endsWith(".docx")) throw new IllegalArgumentException("only support .docx");
-		if(title==null||title.trim().equals("")) throw new IllegalArgumentException("'title' must NOT be empty");
-		if(project==null||project.trim().equals("")) throw new IllegalArgumentException("'prorject' must NOT be empty");
-		
-		Map<String, String> result = new HashMap<>();
+		if(StringUtils.isEmpty(title)) throw new IllegalArgumentException("'Title' must NOT be empty");
+		if(StringUtils.isEmpty(project)) throw new IllegalArgumentException("'Project' must NOT be empty");
+		if(StringUtils.isEmpty(configName)) throw new IllegalArgumentException("'Configuration' must NOT be empty");
 		
 		File tempFile = File.createTempFile((UUID.randomUUID().toString().replace("-", "")), ".docx");
 		FileOutputStream fos = new FileOutputStream(tempFile);
@@ -60,14 +62,13 @@ public class GatewayController implements IGatewayController {
 		fos.close();
 		
 		Map<String, String> fields = new HashMap<>();
-		fields.put("Title", title);
-        fields.put("Project", project);
         fields.put("Category", "Comment");
-        if(oid!=null&&!oid.trim().equals("")) {
-        	String[] tokens = oid.split(":");
-        	fields.put("Windchill Type", tokens[1]);   
-        	fields.put("Windchill ID", tokens[2]); 
+        Enumeration<String> parameterNames = request.getParameterNames();
+        while(parameterNames.hasMoreElements()) {
+        	String paramName = parameterNames.nextElement();
+        	fields.put(paramName, request.getParameter(paramName));
         }
+        fields.remove("Configuration");
 		
 		// 组装命令
 		String cmd = IMPORT_CMD
@@ -75,10 +76,10 @@ public class GatewayController implements IGatewayController {
 			.replace("${port}", client.getProps().getPort())
 			.replace("${user}", client.getProps().getConnectUser())
 			.replace("${pwd}", client.getProps().getPassword())
-			.replace("${config}", "Requirements Document Import and Re-import with Outline Levels")
+			.replace("${config}", configName)
 			.replace("${file}", tempFile.getAbsolutePath())
 			.replace("${fields}", formatFields(fields));
-		System.out.println(cmd);
+		log.info(cmd);
 		
 		// 执行导入命令
 		Process p = Runtime.getRuntime().exec(cmd);
@@ -93,24 +94,6 @@ public class GatewayController implements IGatewayController {
         brError.close();
 		
         tempFile.delete();
-        
-        if(oid!=null&&!oid.trim().equals("")) {
-        	Command imissues = new Command("im", "issues");
-        	imissues.addOption(new Option("fields","ID"));
-        	imissues.addOption(new Option("queryDefinition", "((field[Windchill Type]=\"" + fields.get("Windchill Type") + "\") and (field[Windchill ID]=\"" + fields.get("Windchill ID") + "\"))"));
-        	Response response = client.execute(imissues, null);
-        	if(response.getWorkItemListSize() > 0) {
-        		WorkItem workItem = response.getWorkItems().next();
-        		String url = Doc_Studio_URL
-        			.replace("${hostname}", client.getProps().getHostname())
-        			.replace("${port}", client.getProps().getPort())
-        			.replace("${docId}", workItem.getId());
-        		result.put("id", workItem.getId());
-        		result.put("doc_studio_urrl", url);
-        	}
-        }
-        
-        return result;
 	}
 	
 	private String formatFields(Map<String, String> fields) {
@@ -118,5 +101,50 @@ public class GatewayController implements IGatewayController {
 			.map(item->"\"" + item.getKey() + "\"=\"" + item.getValue() + "\"")
 			.collect(Collectors.joining(";"));
 	}
+	
+	@Override
+	@PostMapping("/export")
+	public void doExport(@RequestParam("id") String id, @RequestParam("Configuration") String configName, HttpServletResponse response) throws Exception {
+		if(!Feature.isEnable(Feature.GATEWAY)) throw new IllegalStateException("节点未启用Gateway特性");
+		
+		// 创建临时文件
+		String tempfileName = System.getProperty("user.dir") + File.separator + UUID.randomUUID().toString().replace("-", "") + ".docx";
+		// 组装导出命令
+		String cmd = EXPORT_CMD
+			.replace("${hostname}", client.getProps().getHostname())
+			.replace("${port}", client.getProps().getPort())
+			.replace("${user}", client.getProps().getConnectUser())
+			.replace("${pwd}", client.getProps().getPassword())
+			.replace("${config}", configName)
+			.replace("${tempfile}", tempfileName)
+			.replace("${id}", id);
+		log.info(cmd);
+		
+		// 启动导出进程
+		Process p = Runtime.getRuntime().exec(cmd);
+		String line = null;
+        BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
+        BufferedReader brError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+        while ((line = br.readLine()) != null  || (line = brError.readLine()) != null) {
+        	//输出exe输出的信息以及错误信息
+        	log.info(line); 
+        }
+        br.close();
+        brError.close();
+        
+        File tempfile = null;
+        try {
+        	tempfile = new File(tempfileName);
+        	if(!tempfile.canRead()) throw new IllegalAccessException("导出执行失败，具体内容需要查询日志");
+        	byte[] buffer = FileUtils.readFileToByteArray(tempfile);
+        	response.setContentType("application/octet-stream");
+        	response.addHeader("Content-Disposition", "attachment;fileName=" + tempfile.getName());
+        	IOUtils.write(buffer, response.getOutputStream());        	
+        } finally {
+			if(tempfile!=null && tempfile.exists()) {
+				tempfile.delete();
+			}
+		}
+	} 
 
 }

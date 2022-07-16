@@ -25,179 +25,18 @@
 			"response": []
 		},
 		{
-			"name": "查询Item列表",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "AuthorizationToken",
-						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ3cnZzLnVzZXIwIjoiYWRtaW4iLCJpc3MiOiJ3cnZzLndlYjAiLCJleHAiOjE2NTU3OTg1MTcsImlhdCI6MTY1NTc5NzYxN30.1r3Tb1JEIGQTmxH94tJL14PFzNtPN1oUqTz9f7VWYzM",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "[\r\n    \"im\",\r\n    \"issues\",\r\n    [\r\n        {\"fields\":\"ID,Summary,State,Type,Created Date,Created By\"},\r\n        {\"query\":\"All Documents\"}\r\n    ],\r\n    [\r\n        \r\n    ]\r\n]",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{ROOT}}/cmdrunner",
-					"host": [
-						"{{ROOT}}"
-					],
-					"path": [
-						"cmdrunner"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "查询Item详情",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "AuthorizationToken",
-						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ3cnZzLnVzZXIwIjoicGppYSIsImlzcyI6IndydnMud2ViMCIsImV4cCI6MTYzNDY0ODYxMSwiaWF0IjoxNjM0NjQ3NzExfQ.RMCeeuKngqxBKwDzG1gKc9_nfue9EPqG-6oKrjeFZk4",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "[\r\n    \"im\",\r\n    \"viewissue\",\r\n    [\r\n        \"showRichcontent\"\r\n    ],\r\n    [\r\n        \"452\"\r\n    ]\r\n]",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{ROOT}}/cmdrunner",
-					"host": [
-						"{{ROOT}}"
-					],
-					"path": [
-						"cmdrunner"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "下载附件",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{ROOT}}/attachment/download?itemId=1&fieldName=DescriptionAttachments&fileName=schematic.png",
-					"host": [
-						"{{ROOT}}"
-					],
-					"path": [
-						"attachment",
-						"download"
-					],
-					"query": [
-						{
-							"key": "itemId",
-							"value": "1"
-						},
-						{
-							"key": "fieldName",
-							"value": "DescriptionAttachments"
-						},
-						{
-							"key": "fileName",
-							"value": "schematic.png"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "更新附件",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "AuthorizationToken",
-						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ3cnZzLnVzZXIwIjoidGVzdDEiLCJpc3MiOiJ3cnZzLndlYjAiLCJleHAiOjE2MzI0ODc4ODcsImlhdCI6MTYzMjQ4Njk4N30.8cw2KDdas_cpg2va8EgQTgZauFZIY0p-GDuMDjQVydA",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"key": "itemId",
-							"value": "452",
-							"type": "text"
-						},
-						{
-							"key": "fieldName",
-							"value": "Shared Attachments",
-							"type": "text"
-						},
-						{
-							"key": "file",
-							"type": "file",
-							"src": "/C:/Users/pjia/Desktop/sample.js"
-						}
-					]
-				},
-				"url": {
-					"raw": "{{ROOT}}/attachment/update",
-					"host": [
-						"{{ROOT}}"
-					],
-					"path": [
-						"attachment",
-						"update"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "删除附件",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "AuthorizationToken",
-						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ3cnZzLnVzZXIwIjoidGVzdDEiLCJpc3MiOiJ3cnZzLndlYjAiLCJleHAiOjE2MzI0OTExNDYsImlhdCI6MTYzMjQ5MDI0Nn0.C2aXLRzqU6phZEyuVDWT2haRo_Itu41p7yRsH3mDYa0",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "[\r\n    \"im\",\r\n    \"editissue\",\r\n    [\r\n        {\"removeAttachment\":\"field=Shared Attachments,name=sample.js\"}\r\n    ],\r\n    [\r\n        \"452\"\r\n    ]\r\n]",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{ROOT}}/cmdrunner",
-					"host": [
-						"{{ROOT}}"
-					],
-					"path": [
-						"cmdrunner"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "登录",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set(\"JWT_Token\", pm.response.json().token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"auth": {
 					"type": "basic",
@@ -230,19 +69,19 @@
 			"response": []
 		},
 		{
-			"name": "创建 Issue",
+			"name": "查询Item列表",
 			"request": {
 				"method": "POST",
 				"header": [
 					{
 						"key": "AuthorizationToken",
-						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ3cnZzLnVzZXIwIjoidGVzdDEiLCJpc3MiOiJ3cnZzLndlYjAiLCJleHAiOjE2MzI0Njg2NzMsImlhdCI6MTYzMjQ2Nzc3M30.0ldDLM1c7z-7G_hfODo070szKI8CQf5fKM3yp2uAfzg",
+						"value": "{{JWT_Token}}",
 						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "[\r\n    \"im\",\r\n    \"createissue\",\r\n    [\r\n        {\"type\":\"Component Software Version\"},\r\n        {\"field\":\"Project=/DEMO/P04\"},\r\n        {\"field\":\"Summary=test20210924\"}\r\n    ],\r\n    []\r\n]",
+					"raw": "[\r\n    \"im\",\r\n    \"issues\",\r\n    [\r\n        {\"fields\":\"ID,Summary,State,Type,Created Date,Created By,Contains\"},\r\n        {\"query\":\"All Documents\"}\r\n    ],\r\n    [\r\n        \r\n    ]\r\n]",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -250,12 +89,172 @@
 					}
 				},
 				"url": {
-					"raw": "{{ROOT}}/cmdrunner",
+					"raw": "{{ROOT}}/api",
 					"host": [
 						"{{ROOT}}"
 					],
 					"path": [
-						"cmdrunner"
+						"api"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "查询Item详情",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "AuthorizationToken",
+						"value": "{{JWT_Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    \"im\",\r\n    \"viewissue\",\r\n    [\r\n        \"showRichcontent\",\r\n        \"showLabels\"\r\n    ],\r\n    [\r\n        \"2-1.0\"\r\n    ]\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ROOT}}/api",
+					"host": [
+						"{{ROOT}}"
+					],
+					"path": [
+						"api"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "创建文档",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "AuthorizationToken",
+						"value": "{{JWT_Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    \"im\",\r\n    \"createsegment\",\r\n    [\r\n        {\"type\":\"Input Document\"},\r\n        {\"field\":\"Project=/Demo\"},\r\n        {\"field\":\"Document Short Title=通过webapi创建的文档\"},\r\n        {\"field\":\"Shared Category=Document\"}\r\n    ],\r\n    []\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ROOT}}/api",
+					"host": [
+						"{{ROOT}}"
+					],
+					"path": [
+						"api"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "创建条目",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "AuthorizationToken",
+						"value": "{{JWT_Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    \"im\",\r\n    \"createcontent\",\r\n    [\r\n        {\"type\":\"Input\"},\r\n        {\"parentID\":\"181\"},\r\n        {\"field\":\"Project=/Demo\"},\r\n        {\"field\":\"Category=Comment\"},\r\n        {\"field\":\"Text=通过WebApi创建的条目\"}\r\n    ],\r\n    []\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ROOT}}/api",
+					"host": [
+						"{{ROOT}}"
+					],
+					"path": [
+						"api"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "基线文档",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "AuthorizationToken",
+						"value": "{{JWT_Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    \"im\",\r\n    \"baseline\",\r\n    [\r\n        {\"label\":\"BL_001\"}\r\n    ],\r\n    [\"181\"]\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ROOT}}/api",
+					"host": [
+						"{{ROOT}}"
+					],
+					"path": [
+						"api"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "删除附件",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "AuthorizationToken",
+						"value": "{{JWT_Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    \"im\",\r\n    \"editissue\",\r\n    [\r\n        {\"removeAttachment\":\"field=Shared Attachments,name=配置方式.docx\"}\r\n    ],\r\n    [\r\n        \"181\"\r\n    ]\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ROOT}}/api",
+					"host": [
+						"{{ROOT}}"
+					],
+					"path": [
+						"api"
 					]
 				}
 			},
@@ -268,13 +267,13 @@
 				"header": [
 					{
 						"key": "AuthorizationToken",
-						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ3cnZzLnVzZXIwIjoidGVzdDEiLCJpc3MiOiJ3cnZzLndlYjAiLCJleHAiOjE2MzI0NzA3OTEsImlhdCI6MTYzMjQ2OTg5MX0.HKoZ_hKSlUbpJv-0qMtDE942yIq6Mswfb-H5U4OL61k",
+						"value": "{{JWT_Token}}",
 						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "[\r\n    \"aa\",\r\n    \"users\",\r\n    [\r\n       \"groups\"\r\n    ],\r\n    [\"pjia\"]\r\n]",
+					"raw": "[\r\n    \"aa\",\r\n    \"users\",\r\n    [\r\n       \"groups\"\r\n    ],\r\n    [\"admin\"]\r\n]",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -282,37 +281,94 @@
 					}
 				},
 				"url": {
-					"raw": "{{ROOT}}/cmdrunner",
+					"raw": "{{ROOT}}/api",
 					"host": [
 						"{{ROOT}}"
 					],
 					"path": [
-						"cmdrunner"
+						"api"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Mksapi 使用 Demo",
+			"name": "更新附件",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "AuthorizationToken",
+						"value": "{{JWT_Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "itemId",
+							"value": "181",
+							"type": "text"
+						},
+						{
+							"key": "fieldName",
+							"value": "Shared Attachments",
+							"type": "text"
+						},
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/Stormwine/Desktop/配置方式.docx"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ROOT}}/attachment/update",
+					"host": [
+						"{{ROOT}}"
+					],
+					"path": [
+						"attachment",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "下载附件",
 			"request": {
 				"method": "GET",
 				"header": [
 					{
 						"key": "AuthorizationToken",
-						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ3cnZzLnVzZXIwIjoiYWRtaW4iLCJpc3MiOiJ3cnZzLndlYjAiLCJleHAiOjE2NTU3OTg1MTcsImlhdCI6MTY1NTc5NzYxN30.1r3Tb1JEIGQTmxH94tJL14PFzNtPN1oUqTz9f7VWYzM",
+						"value": "{{JWT_Token}}",
 						"type": "text"
 					}
 				],
 				"url": {
-					"raw": "{{ROOT}}/services/inputdocument/2",
+					"raw": "{{ROOT}}/attachment/download?itemId=181&fieldName=Shared Attachments&fileName=配置方式.docx",
 					"host": [
 						"{{ROOT}}"
 					],
 					"path": [
-						"services",
-						"inputdocument",
-						"2"
+						"attachment",
+						"download"
+					],
+					"query": [
+						{
+							"key": "itemId",
+							"value": "181"
+						},
+						{
+							"key": "fieldName",
+							"value": "Shared Attachments"
+						},
+						{
+							"key": "fileName",
+							"value": "配置方式.docx"
+						}
 					]
 				}
 			},
@@ -325,7 +381,7 @@
 				"header": [
 					{
 						"key": "AuthorizationToken",
-						"value": "",
+						"value": "{{JWT_Token}}",
 						"type": "text"
 					}
 				],
@@ -334,7 +390,7 @@
 					"formdata": [
 						{
 							"key": "Title",
-							"value": "导入文档测试002",
+							"value": "导入文档测试003",
 							"type": "text"
 						},
 						{
@@ -345,11 +401,21 @@
 						{
 							"key": "file",
 							"type": "file",
-							"src": "/C:/Users/Stormwine/Desktop/2 - 2022-07-07.docx"
+							"src": "/C:/Users/Stormwine/Desktop/配置方式.docx"
 						},
 						{
-							"key": "Windchill OID",
-							"value": "OR:wt.doc.WTDocument:3",
+							"key": "Windchill Type",
+							"value": "wt.doc.WTDocument",
+							"type": "text"
+						},
+						{
+							"key": "Configuration",
+							"value": "Requirements Document Import and Re-import with Outline Levels",
+							"type": "text"
+						},
+						{
+							"key": "Windchill ID",
+							"value": "3",
 							"type": "text"
 						}
 					]
@@ -362,6 +428,45 @@
 					"path": [
 						"gateway",
 						"import"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "导出docx",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "AuthorizationToken",
+						"value": "{{JWT_Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "id",
+							"value": "181",
+							"type": "text"
+						},
+						{
+							"key": "Configuration",
+							"value": "Sample MS Word Exporter -- simple headers and content",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ROOT}}/gateway/export",
+					"host": [
+						"{{ROOT}}"
+					],
+					"path": [
+						"gateway",
+						"export"
 					]
 				}
 			},
@@ -392,6 +497,11 @@
 		{
 			"key": "ROOT",
 			"value": "http://127.0.0.1:9100"
+		},
+		{
+			"key": "JWT_Token",
+			"value": "",
+			"type": "string"
 		}
 	]
 }

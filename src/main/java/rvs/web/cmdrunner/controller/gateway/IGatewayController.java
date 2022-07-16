@@ -1,7 +1,9 @@
 package rvs.web.cmdrunner.controller.gateway;
 
-import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -16,17 +18,27 @@ import org.springframework.web.multipart.MultipartFile;
 public interface IGatewayController {
 	
 	/**
-	 * 导入 Word，支持格式 docx。<br>注意</br> 此方法线程不安全。
-	 * 启用  Windchill OID 参数需要确保对应的 Document类型应该支持 Windchill Type 和  Windchill ID 的导入
+	 * 导入 Word，支持格式 docx。
 	 * 
 	 * @param file docx文件
-	 * @param config 导入配置
+	 * @param configName 导入配置
 	 * @param title 文档名称
 	 * @param prorject 所属项目
+	 * 
 	 * @return 
 	 * 
 	 * @throws Exception
 	 */
-	public Map<String, String> doImport(MultipartFile file, String title, String prorject, String oid) throws Exception;
+	public void doImport(MultipartFile file, String configName, String title, String prorject, HttpServletRequest request) throws Exception;
+	
+	/**
+	 * 导出文档到docx
+	 * 
+	 * @param id 文档ID
+	 * @param configName 配置
+	 * 
+	 * @throws Exception
+	 */
+	public void doExport(String id, String configName, HttpServletResponse response) throws Exception;
 
 }
