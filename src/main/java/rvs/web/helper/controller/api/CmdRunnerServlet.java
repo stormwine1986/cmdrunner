@@ -1,4 +1,4 @@
-package rvs.web.helper;
+package rvs.web.helper.controller.api;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,7 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -37,9 +37,10 @@ import com.mks.api.response.WorkItemIterator;
 import lombok.extern.slf4j.Slf4j;
 import rvs.web.helper.client.IWRVSClient;
 import rvs.web.helper.context.RequestContext;
+import rvs.web.helper.feature.Feature;
 
 @Slf4j
-@WebServlet(urlPatterns="/cmdrunner")
+@WebServlet(urlPatterns="/api")
 public class CmdRunnerServlet extends HttpServlet {
 
 	/**
@@ -47,11 +48,14 @@ public class CmdRunnerServlet extends HttpServlet {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	@Autowired
+	@Resource
 	private IWRVSClient client;
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
+		if(!Feature.isEnable(Feature.API)) throw new IllegalStateException("节点未启用 API特性");
+		
 		String contentType = req.getContentType();
 		String encoding = req.getCharacterEncoding();
 		if(!"application/json".equals(contentType) || !"UTF-8".equals(encoding)) {

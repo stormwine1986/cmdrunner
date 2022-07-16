@@ -1,4 +1,4 @@
-package rvs.web.helper.controller;
+package rvs.web.helper.controller.gateway;
 
 import java.util.Map;
 

@@ -9,6 +9,8 @@ import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 import org.springframework.web.socket.server.HandshakeInterceptor;
 
+import rvs.web.helper.feature.Feature;
+
 /**
  * Web Socket 配置类
  * 
@@ -26,9 +28,11 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
 	@Override
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-		registry.addHandler(defaultHandler,"ws")  // 添加处理器
-				.addInterceptors(defaultInterceptor) // 添加拦截器
-				.setAllowedOrigins("*"); // 解决跨域
+		if(Feature.isEnable(Feature.WEBSOCKET)) {
+			registry.addHandler(defaultHandler,"ws")  // 添加处理器
+			.addInterceptors(defaultInterceptor) // 添加拦截器
+			.setAllowedOrigins("*"); // 解决跨域			
+		}
 	}
 
 }

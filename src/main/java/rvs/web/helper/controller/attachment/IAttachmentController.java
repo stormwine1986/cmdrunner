@@ -1,4 +1,4 @@
-package rvs.web.helper.controller;
+package rvs.web.helper.controller.attachment;
 
 import javax.servlet.http.HttpServletResponse;
 

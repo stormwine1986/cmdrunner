@@ -1,8 +1,9 @@
-package rvs.web.helper.controller;
+package rvs.web.helper.controller.attachment;
 
 import java.io.File;
 import java.util.UUID;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FileUtils;
@@ -21,6 +22,7 @@ import com.mks.api.response.APIException;
 
 import lombok.extern.slf4j.Slf4j;
 import rvs.web.helper.client.IWRVSClient;
+import rvs.web.helper.feature.Feature;
 
 @Slf4j
 @RestController
@@ -34,6 +36,9 @@ public class AttachmentController implements IAttachmentController {
 	@GetMapping("/download")
 	public void download(@RequestParam("itemId") String id, @RequestParam("fieldName") String fieldName,
 			@RequestParam("fileName") String fileName, HttpServletResponse response) throws Exception {
+		
+		if(!Feature.isEnable(Feature.ATTACHMENT)) throw new IllegalStateException("节点未启用 Attachment特性");
+		
 		File tempFile = null;
 		try {
 			Command command = new Command("im", "extractattachments");
@@ -57,6 +62,9 @@ public class AttachmentController implements IAttachmentController {
 	@Override
 	@PostMapping("/update")
 	public void update(@RequestParam("itemId") String id, @RequestParam("fieldName") String fieldName, MultipartFile file) throws Exception {
+		
+		if(!Feature.isEnable(Feature.ATTACHMENT)) throw new IllegalStateException("节点未启用 Attachment特性");
+		
 		File tempFile = null;
 		try {
 			String fileName = file.getOriginalFilename();
@@ -75,5 +83,4 @@ public class AttachmentController implements IAttachmentController {
 			}
 		}
 	}
-
 }

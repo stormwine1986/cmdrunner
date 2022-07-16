@@ -1,4 +1,4 @@
-package rvs.web.helper.controller;
+package rvs.web.helper.controller.gateway;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
+import javax.annotation.Resource;
 
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,7 @@ import com.mks.api.response.WorkItem;
 
 import lombok.extern.slf4j.Slf4j;
 import rvs.web.helper.client.IWRVSClient;
+import rvs.web.helper.feature.Feature;
 
 @Slf4j
 @RestController
@@ -43,6 +46,9 @@ public class GatewayController implements IGatewayController {
 	@Override
 	@PostMapping("/import")
 	public Map<String, String> doImport(MultipartFile file, @RequestParam("Title") String title, @RequestParam("Project") String project, @RequestParam(name="Windchill OID",required=false) String oid) throws Exception {
+		
+		if(!Feature.isEnable(Feature.GATEWAY)) throw new IllegalStateException("节点未启用 Gateway特性");
+		
 		if(!file.getOriginalFilename().endsWith(".docx")) throw new IllegalArgumentException("only support .docx");
 		if(title==null||title.trim().equals("")) throw new IllegalArgumentException("'title' must NOT be empty");
 		if(project==null||project.trim().equals("")) throw new IllegalArgumentException("'prorject' must NOT be empty");
